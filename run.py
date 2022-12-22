@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify, request
 
 app = Flask(__name__)
+
 def getRace(race):
     if race == 'White':
         return 1
@@ -42,6 +43,18 @@ def getAgeCat(age):
     else:
         return 13
 
+def getGenHealth(genHealth):
+    if genHealth == 'Excellent':
+        return 5
+    elif genHealth == 'Very Good':
+        return 4
+    elif genHealth == 'Good':
+        return 3
+    elif genHealth == 'Fair':
+        return 2
+    else:
+        return 1
+
 def getInfo(req):
     """
     Info includes: 
@@ -58,8 +71,8 @@ def getInfo(req):
     cur_year = datetime.datetime.today().year
     AgeCategory = getAgeCat(int(cur_year - req['year']))
     Race = getRace(req['Race'])
-    PhysicalActivity = req['PhysicalActivity']
-    GenHealth = req['GenHealth']
+    PhysicalActivity = 1 if req['PhysicalActivity'] else 0
+    GenHealth = getGenHealth(req['GenHealth'])
     SleepTime = req['SleepTime']
 
     info = [BMI, Smoking, AlcoholDrinking, Stroke, DiffWalking,
