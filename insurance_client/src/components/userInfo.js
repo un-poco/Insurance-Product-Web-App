@@ -154,9 +154,29 @@ function PricingContent() {
   
 
   const [plan, setPlan] = React.useState('');
+  const [sex, setSex] = React.useState('');
+  const [race, setRace] = React.useState('');
+  const [walk, setWalk] = React.useState('');
+  const [pysical, setPysical] = React.useState('');
+  const [health, setHealth] = React.useState('');
 
   const handleChange = (event) => {
     setPlan(event.target.value);
+  };
+  const handleChange1 = (event) => {
+    setSex(event.target.value);
+  };
+  const handleChange2 = (event) => {
+    setRace(event.target.value);
+  };
+  const handleChange3 = (event) => {
+    setWalk(event.target.value);
+  };
+  const handleChange4 = (event) => {
+    setPysical(event.target.value);
+  };
+  const handleChange5 = (event) => {
+    setHealth(event.target.value);
   };
 
   const handleSubmit = async (event) => {
@@ -182,6 +202,11 @@ function PricingContent() {
       GeneralHealth: GeneralHealthField.current.value,
       SleepTime: SleepTimeField.current.value,
       diseasesState,
+      sex,
+      race,
+      walk,
+      pysical,
+      health,
       plan
     }
     console.log(userForm)
@@ -222,7 +247,7 @@ function PricingContent() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You have pay it successfully! A comformation email has been sent to you email: {emailField.current.value}
+            A bill letter and all other forms and information have been sent to your email: {emailField.current.value}, please pay it after you have reviewed the terms of use.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -243,7 +268,7 @@ function PricingContent() {
       >
         <Toolbar sx={{ flexWrap: 'wrap' }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            Company name
+            Best Insurance Company
           </Typography>
           <nav>
             <Link
@@ -354,7 +379,7 @@ function PricingContent() {
             </Grid>
           ))}
         </Grid>
-        
+
       </Container>
 
       <Container maxWidth="md" component="main" sx={{ pt: 2, pb: 6 }}>
@@ -521,7 +546,7 @@ function PricingContent() {
           required
           id="standard-required"
           label="Height"
-          placeholder="6'1''"
+          placeholder="160"
           variant="standard"
           inputRef={heightField}
         />
@@ -533,7 +558,7 @@ function PricingContent() {
           required
           id="standard-required"
           label="Weight"
-          placeholder="110 lbs"
+          placeholder="100"
           variant="standard"
           inputRef={weightField}
         />
@@ -566,7 +591,7 @@ function PricingContent() {
         <p>Do You Have Any of the Following Diseases or Perform Any of the Actions?</p>
         <FormGroup>
           <FormControlLabel control={<Checkbox name='smoking' checked={diseasesState.smoking} onChange={handleDiseaseChange} />} label="Smoking" />
-          <FormControlLabel control={<Checkbox name='AlcoholDrink' checked={diseasesState.AlcoholDrink} onChange={handleDiseaseChange}/>} label="AlcoholDrink" />
+          <FormControlLabel control={<Checkbox name='AlcoholDrink' checked={diseasesState.AlcoholDrink} onChange={handleDiseaseChange}/>} label="Drink Alcohol" />
           <FormControlLabel control={<Checkbox name='hd' checked={diseasesState.hd} onChange={handleDiseaseChange}/>} label="Heart Disease" />
           <FormControlLabel control={<Checkbox name='Stroke' checked={diseasesState.Stroke} onChange={handleDiseaseChange}/>} label="Stroke" />
           <FormControlLabel control={<Checkbox name='Diabetes' checked={diseasesState.Diabetes} onChange={handleDiseaseChange}/>} label="Diabetes" />
@@ -575,16 +600,16 @@ function PricingContent() {
 
         <p>What is your sex?</p>
         <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Plan</InputLabel>
+        <InputLabel id="demo-simple-select-label">Sex</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={plan}
+            value={sex}
             label="Sex"
-            onChange={handleChange}
+            onChange={handleChange1}
           >
-            <MenuItem value={0}>Female</MenuItem>
-            <MenuItem value={1}>Male</MenuItem>
+            <MenuItem value={"Female"}>Female</MenuItem>
+            <MenuItem value={"Male"}>Male</MenuItem>
           </Select>
         </FormControl>
 
@@ -594,16 +619,16 @@ function PricingContent() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={plan}
+            value={race}
             label="Sex"
-            onChange={handleChange}
+            onChange={handleChange2}
           >
-            <MenuItem value={0}>White</MenuItem>
-            <MenuItem value={1}>Asian</MenuItem>
-            <MenuItem value={2}>Black</MenuItem>
-            <MenuItem value={3}>American Indian/Alaskan Native</MenuItem>
-            <MenuItem value={4}>Hispanic</MenuItem>
-            <MenuItem value={5}>Other</MenuItem>
+            <MenuItem value={"White"}>White</MenuItem>
+            <MenuItem value={"Asian"}>Asian</MenuItem>
+            <MenuItem value={"Black"}>Black</MenuItem>
+            <MenuItem value={"American Indian/Alaskan Native"}>American Indian/Alaskan Native</MenuItem>
+            <MenuItem value={"Hispanic"}>Hispanic</MenuItem>
+            <MenuItem value={"Other"}>Other</MenuItem>
 
           </Select>
         </FormControl>
@@ -614,9 +639,9 @@ function PricingContent() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={plan}
+            value={walk}
             label="Walk"
-            onChange={handleChange}
+            onChange={handleChange3}
           >
             <MenuItem value={0}>Yes</MenuItem>
             <MenuItem value={1}>No</MenuItem>
@@ -629,12 +654,12 @@ function PricingContent() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={plan}
+            value={pysical}
             label="Answer"
-            onChange={handleChange}
+            onChange={handleChange4}
           >
-            <MenuItem value={0}>Yes</MenuItem>
-            <MenuItem value={1}>No</MenuItem>
+            <MenuItem value={true}>Yes</MenuItem>
+            <MenuItem value={false}>No</MenuItem>
           </Select>
         </FormControl>
 
@@ -644,15 +669,15 @@ function PricingContent() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={plan}
+            value={health}
             label="Answer"
-            onChange={handleChange}
+            onChange={handleChange5}
           >
-            <MenuItem value={0}>Excellent</MenuItem>
-            <MenuItem value={1}>Very good</MenuItem>
-            <MenuItem value={2}>Good</MenuItem>
-            <MenuItem value={3}>Fair</MenuItem>
-            <MenuItem value={4}>Poor</MenuItem>
+            <MenuItem value={"Excellent"}>Excellent</MenuItem>
+            <MenuItem value={"Very good"}>Very good</MenuItem>
+            <MenuItem value={"Good"}>Good</MenuItem>
+            <MenuItem value={"Fair"}>Fair</MenuItem>
+            <MenuItem value={"Poor"}>Poor</MenuItem>
           </Select>
         </FormControl>
 
