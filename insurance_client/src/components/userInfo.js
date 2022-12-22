@@ -159,7 +159,6 @@ function PricingContent() {
   const [walk, setWalk] = React.useState('');
   const [pysical, setPysical] = React.useState('');
   const [health, setHealth] = React.useState('');
-
   const handleChange = (event) => {
     setPlan(event.target.value);
   };
@@ -600,7 +599,7 @@ function PricingContent() {
 
         <p>What is your sex?</p>
         <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Sex</InputLabel>
+        <InputLabel id="demo-simple-select-label">Answer</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -615,7 +614,7 @@ function PricingContent() {
 
         <p>What is your race?</p>
         <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Plan</InputLabel>
+        <InputLabel id="demo-simple-select-label">Answer</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -635,7 +634,7 @@ function PricingContent() {
 
         <p>Can you walk?</p>
         <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Plan</InputLabel>
+        <InputLabel id="demo-simple-select-label">Answer</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -650,7 +649,7 @@ function PricingContent() {
 
         <p>Can you do pysical activity?</p>
         <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Plan</InputLabel>
+        <InputLabel id="demo-simple-select-label">Answer</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -665,7 +664,7 @@ function PricingContent() {
 
         <p>What is your general health performance?</p>
         <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Plan</InputLabel>
+        <InputLabel id="demo-simple-select-label">Answer</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -683,7 +682,7 @@ function PricingContent() {
 
         <p>Which Life Plan?</p>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Plan</InputLabel>
+          <InputLabel id="demo-simple-select-label">Answer</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
