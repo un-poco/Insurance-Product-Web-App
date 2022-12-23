@@ -157,7 +157,7 @@ function PricingContent() {
   const [sex, setSex] = React.useState('');
   const [race, setRace] = React.useState('');
   const [walk, setWalk] = React.useState('');
-  const [pysical, setPysical] = React.useState('');
+  const [physical, setPhysical] = React.useState('');
   const [health, setHealth] = React.useState('');
   const handleChange = (event) => {
     setPlan(event.target.value);
@@ -172,7 +172,7 @@ function PricingContent() {
     setWalk(event.target.value);
   };
   const handleChange4 = (event) => {
-    setPysical(event.target.value);
+    setPhysical(event.target.value);
   };
   const handleChange5 = (event) => {
     setHealth(event.target.value);
@@ -204,7 +204,7 @@ function PricingContent() {
       sex,
       race,
       walk,
-      pysical,
+      physical,
       health,
       plan
     }
@@ -647,13 +647,13 @@ function PricingContent() {
           </Select>
         </FormControl>
 
-        <p>Can you do pysical activity?</p>
+        <p>Can you do physical activity?</p>
         <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Answer</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={pysical}
+            value={physical}
             label="Answer"
             onChange={handleChange4}
           >

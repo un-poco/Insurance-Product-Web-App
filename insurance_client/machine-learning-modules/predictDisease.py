@@ -6,35 +6,55 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import cross_val_score
 from sklearn.cluster import KMeans
-from sklearn.svm import SVC
+from sklearn.svm import SVR
 import pandas as pd
 import numpy as np
 
-df = pd.read_excel('heart_data.xlsx')
+df = pd.read_excel('encoded_data.xlsx')
+df = np.array(df)
+
+x = np.delete(df, slice(10, 14), axis=1)
 scaler = StandardScaler()
-df_std = scaler.fit_transform(df)
+x = scaler.fit_transform(x)
 
 # predict the possibility of having a specific disease
-labels = df_std[:, 11] # Column 11 is where diabetic data lies in
-lab = LabelEncoder()
-y = lab.fit_transform(labels)
-print(y)
-x = np.delete(df_std, 11, axis=1)
-clf_svm = SVC()
-predicted_svm = cross_val_score(clf_svm, x, y, cv=5, error_score='raise')
-# Result of accuracy
-print("svm accuracy: ", predicted_svm.mean())
+y_asthma = df[:, 10]
+y_heart = df[:, 11]
+y_diabet = df[:, 12]
+y_stroke = df[:, 13]
+
+clf_asthma = SVR()
+clf_heart = SVR()
+clf_diabet = SVR()
+clf_stroke = SVR()
+predicted_svm_asthma = cross_val_score(clf_asthma, x, y_asthma, cv=5, error_score='raise')
+predicted_svm_heart = cross_val_score(clf_asthma, x, y_heart, cv=5, error_score='raise')
+predicted_svm_diabet = cross_val_score(clf_asthma, x, y_diabet, cv=5, error_score='raise')
+predicted_svm_stroke = cross_val_score(clf_asthma, x, y_stroke, cv=5, error_score='raise')
+
+# # Result of accuracy 
+# print("svm accuracy for predicting Asthma: ", predicted_svm_asthma.mean())
+# print("svm accuracy for predicting Heart Disease: ", predicted_svm_heart.mean())
+# print("svm accuracy for predicting Diabet: ", predicted_svm_diabet.mean())
+# print("svm accuracy for predicting Stroke: ", predicted_svm_stroke.mean())
 
 # 3) Store the model
 import joblib
-clf_svm.fit(x, y)
-joblib.dump(clf_svm, 'model.pkl') 
+clf_asthma.fit(x, y_asthma)
+clf_heart.fit(x, y_heart)
+clf_diabet.fit(x, y_diabet)
+clf_stroke.fit(x, y_stroke)
+
+joblib.dump(scaler, 'scaler') # store the scaler
+joblib.dump(clf_asthma, 'model_asthma.pkl') 
+joblib.dump(clf_heart, 'model_heart.pkl') 
+joblib.dump(clf_diabet, 'model_diabet.pkl') 
+joblib.dump(clf_stroke, 'model_stroke.pkl') 
 
 # 4) Load it again and test the result
-clf_load = joblib.load('model.pkl') 
-# x_test = [[0,16.6,1,0,0,3,30,0,0,1,0,1,3,5,1,0,1]]
-# x_test = [[0, 20.34, 0, 0, 1, 0, 0, 0, 0, 6, 0, 1, 3, 7, 0, 0, 0]]
-x_test = [[0, 26.58, 1, 0, 0, 20, 30, 0, 1, 3, 0, 1, 1, 8, 1, 0, 0]]
-y_test = clf_load.predict(scaler.fit_transform(x_test))
+clf_load = joblib.load('model_asthma.pkl') 
+scaler = joblib.load('scaler')
+x_test = [[20.34,	0,	0,	0,	2,	13,	1,	1,	4,	7]]
+y_test = clf_load.predict(scaler.transform(x_test))
 print(y_test)
 

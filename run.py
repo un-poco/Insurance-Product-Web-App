@@ -1,7 +1,13 @@
 from flask import Flask
 from flask import jsonify, request
+import joblib
 
 app = Flask(__name__)
+scaler = joblib.load('insurance_client/machine-learning-modules/scaler')
+clf_asthma = joblib.load('insurance_client/machine-learning-modules/model_asthma.pkl') 
+clf_diabet = joblib.load('insurance_client/machine-learning-modules/model_diabet.pkl') 
+clf_heart = joblib.load('insurance_client/machine-learning-modules/model_heart.pkl') 
+clf_stroke = joblib.load('insurance_client/machine-learning-modules/model_stroke.pkl') 
 
 def getRace(race):
     if race == 'White':
@@ -62,50 +68,59 @@ def getInfo(req):
     Sex, AgeCategory, Race, Physical Activity, GenHealth, SleepTime
     """
     BMI = req['BMI']
-    Smoking = 1 if req['Smoking'] else 0
-    AlcoholDrinking = 1 if req['AlcoholDrink'] else 0
-    Stroke = 1 if req['Stroke'] else 0
-    DiffWalking = 1 if req['DiffWalking'] else 0
-    Sex = 1 if req['Sex'] == 'Male' else 2
+    Smoking = 1 if req['diseasesState']['smoking'] else 0
+    AlcoholDrinking = 1 if req['diseasesState']['AlcoholDrink'] else 0
+    DiffWalking = 1 if req['walk'] else 0
+    Sex = 1 if req['sex'] == 'Male' else 2
     import datetime
     cur_year = datetime.datetime.today().year
-    AgeCategory = getAgeCat(int(cur_year - req['year']))
-    Race = getRace(req['Race'])
-    PhysicalActivity = 1 if req['PhysicalActivity'] else 0
-    GenHealth = getGenHealth(req['GenHealth'])
+    AgeCategory = getAgeCat(int(cur_year - int(req['year'])))
+    Race = getRace(req['race'])
+    PhysicalActivity = 1 if req['physical'] else 0
+    GenHealth = getGenHealth(req['health'])
     SleepTime = req['SleepTime']
 
-    info = [BMI, Smoking, AlcoholDrinking, Stroke, DiffWalking,
+    info = [BMI, Smoking, AlcoholDrinking, DiffWalking,
     Sex, AgeCategory, Race, PhysicalActivity, GenHealth, SleepTime]
 
     return info
 
-def predict():
-    return 0.5
 @app.route('/price', methods=['POST'])
 def calculatePrice():
     req = request.json
-    print(req)
-    # print(req['diseasesState']['smoking'] == False)
-    # print(type(req))
+    info = getInfo(req)
+
     price, k, inc = 0, 100, 0
 
-    for dis, status in req['diseasesState'].items():
-        if status: 
-            # The customer has this disease
-            inc += 1 
-        else:
-            # The customer hasn't had this disease yet, 
-            # then predict whether he/she may have it in the future
-            # inc += predict(dis)
-            pass
+    if req['diseasesState']['Stroke']:
+        # The customer has this disease
+        inc += 1 
+    else:
+        # if hasn't had it yet, then predict whether may have it in the future
+        inc += clf_stroke.predict(scaler.transform([info]))
+
+    if req['diseasesState']['Diabetes']:
+        inc += 1 
+    else:
+        inc += clf_diabet.predict(scaler.transform([info]))
+
+    if req['diseasesState']['asthma']:
+        inc += 1 
+    else:
+        inc += clf_asthma.predict(scaler.transform([info]))
+
+    if req['diseasesState']['hd']:
+        inc += 1 
+    else:
+        inc += clf_heart.predict(scaler.transform([info]))
+
     # Decide the prices for insurance plans
     if req['plan'] == 0:
-        price = 2000 + inc * k
+        price = 2000 + int(inc * k)
     elif req['plan'] == 1:
-        price = 5000 + inc * k
+        price = 5000 + int(inc * k)
     elif req['plan'] == 2:
-        price = 10000 + inc * k
+        price = 10000 + int(inc * k)
 
     return jsonify({
         'price': price
